@@ -1,0 +1,1 @@
+.\ContentImporter\bin\Debug\net7.0\ContentImporter.exe .\ShmupTest\ShmupTest.csproj .\ShmupTest\Content\ .\ShmupTest\Content.cs

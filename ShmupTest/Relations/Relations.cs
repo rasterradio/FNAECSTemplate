@@ -1,3 +1,3 @@
-namespace FNAECSTemplate.Components;
+namespace ShmupTest.Components;
 
 public readonly record struct ExampleRelation();

@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 using MoonTools.ECS;
 using System.Text;
-using FNAECSTemplate.Messages;
-using FNAECSTemplate.Utility;
+using ShmupTest.Messages;
+using ShmupTest.Utility;
 
-namespace FNAECSTemplate.Systems;
+namespace ShmupTest.Systems;
 
 public enum Actions
 {

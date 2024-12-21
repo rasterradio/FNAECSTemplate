@@ -1,17 +1,17 @@
-using System;
+/*using System;
 using MoonTools.ECS;
-using FNAECSTemplate.Components;
-using FNAECSTemplate.Messages;
+using ShmupTest.Components;
+using ShmupTest.Messages;
 
 
-namespace FNAECSTemplate.Systems;
+namespace ShmupTest.Systems;
 
 /*
 this is a system. systems can read and modify components and entities. 
 */
-public class ExampleSystem : MoonTools.ECS.System
+/*public class ExampleSystem : MoonTools.ECS.System
 {
-    private Filter ExampleFilter { get; }
+    /*private Filter ExampleFilter { get; }
     private System.Random rnd { get; } = new System.Random();
 
     public ExampleSystem(World world) : base(world)
@@ -19,7 +19,7 @@ public class ExampleSystem : MoonTools.ECS.System
         /*
         this is a filter. a filter allows us to specify which entities we do and don't want.
         a filter will, every frame, get us every single entity that matches its criteria.
-        */
+        *//*
         ExampleFilter = FilterBuilder
                         .Include<ExampleComponent>()
                         .Build();
@@ -39,8 +39,8 @@ public class ExampleSystem : MoonTools.ECS.System
             in the component store. we have to call Set() to update the component store so that
             other systems can read our changes and they'll persist across frames.
             */
-            foreach (var input in ReadMessages<InputAction>())
+            /*foreach (var input in ReadMessages<InputAction>())
                 Set(example, new ExampleComponent(rnd.NextSingle()));
         }
-    }
-}
+    }*/
+//}

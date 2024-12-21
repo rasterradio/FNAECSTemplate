@@ -3,38 +3,43 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MoonTools.ECS;
-using FNAECSTemplate.Systems;
-using FNAECSTemplate.Components;
-using FNAECSTemplate.Renderers;
+using ShmupTest.Systems;
+using ShmupTest.Components;
+using ShmupTest.Renderers;
 using FontStashSharp;
-using FNAECSTemplate.Content;
+using ShmupTest.Content;
 
-namespace FNAECSTemplate;
+namespace ShmupTest;
 
-public class Game1 : Game
+
+public class ShmupTest : Game
 {
     GraphicsDeviceManager GraphicsDeviceManager { get; }
 
     /*
-    the World is the place where all our entities go.
+    the World is the place where all our entities go.5
     */
     World World { get; } = new World();
 
     Input Input;
-    ExampleSystem ExampleSystem;
-    ExampleRenderer ExampleRenderer;
-
+    //ExampleSystem ExampleSystem;
     SpriteBatch SpriteBatch;
+    SpriteRenderer SpriteRenderer;
+
+    public static readonly int RenderWidth = 320;
+public static readonly int RenderHeight = 240;
+public static RenderTarget2D RenderTarget;
+public static readonly float AspectRatio = (float)RenderWidth / RenderHeight;
 
     [STAThread]
     internal static void Main()
     {
-        using (Game1 game = new Game1())
+        using (ShmupTest game = new ShmupTest())
         {
             game.Run();
         }
     }
-    private Game1()
+    private ShmupTest()
     {
         //setup our graphics device, default window size, etc
         //here is where i will make a plea to you, intrepid game developer:
@@ -63,6 +68,8 @@ public class Game1 : Game
         it's much more efficient to send one huge batch than to send sprites piecemeal. 
         See more in the Renderers/ExampleRenderer.cs. 
         */
+        RenderTarget = new RenderTarget2D(GraphicsDevice, RenderWidth, RenderHeight);
+
         SpriteBatch = new(GraphicsDevice);
 
         AllContent.Initialize(Content);
@@ -75,26 +82,22 @@ public class Game1 : Game
         you can pass in information that these systems might need to their constructors.
         it doesn't matter what order you create the systems in, we'll specify in what order they run later.
         */
-        ExampleSystem = new(World);
+        // = new(World);
         Input = new(World);
 
         /*
         RENDERERS
         */
 
-        //same as above, but for the renderer
-        ExampleRenderer = new(World, SpriteBatch);
+        SpriteRenderer = new SpriteRenderer(World, SpriteBatch);
 
         /*
         ENTITIES
         */
 
-        for (int i = 0; i < 10; i++)
-        {
-            var e = World.CreateEntity();
-            World.Set(e, new ExampleComponent(0f));
-        }
-
+            var player = World.CreateEntity();
+            World.Set(player, new Sprite(Textures.Player, 0.0f));
+            World.Set(player, new Position(new Vector2(RenderWidth * 0.5f, RenderHeight * 0.5f)));
         base.LoadContent();
     }
 
@@ -115,22 +118,46 @@ public class Game1 : Game
         over the order systems run in, and whether they run at all.
         */
         Input.Update(gameTime.ElapsedGameTime); //always update this before anything that takes inputs
-        ExampleSystem.Update(gameTime.ElapsedGameTime);
+        //ExampleSystem.Update(gameTime.ElapsedGameTime);
         World.FinishUpdate(); //always call this at the end of your update function.
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue); //set the color of the background. cornflower blue is XNA tradition.
+        GraphicsDevice.SetRenderTarget(RenderTarget);
 
-        /*
-        call renderers here.
-        renderers don't get passed the game time. 
-        if you are thinking about passing the game time to a renderer
-        in order to do something, try doing it some other way. you'll thank me later.
-        */
-        ExampleRenderer.Draw();
-        base.Draw(gameTime);
+        GraphicsDevice.Clear(Color.Black);
+        SpriteRenderer.Draw();
+
+        GraphicsDevice.SetRenderTarget(null);
+        GraphicsDevice.Clear(Color.Black);
+
+        SpriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.Opaque,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                RasterizerState.CullCounterClockwise
+            );
+
+        var height = Window.ClientBounds.Height;
+        height -= (height % RenderHeight);
+        var width = (int)MathF.Floor(height * AspectRatio);
+        var wDiff = Window.ClientBounds.Width - width;
+        var hDiff = Window.ClientBounds.Height - height;
+
+        SpriteBatch.Draw(
+            RenderTarget,
+            new Rectangle(
+                (int)MathF.Floor(wDiff * 0.5f),
+                (int)MathF.Floor(hDiff * 0.5f),
+                width,
+                height),
+            null,
+            Color.White
+        );
+
+        SpriteBatch.End();
     }
 }

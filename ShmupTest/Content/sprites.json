@@ -1,0 +1,40 @@
+{
+	"Name": "sprites",
+	"Width": 32,
+	"Height": 32,
+	"Images": [
+		{
+			"Name": "bullet.png",
+			"X": 13,
+			"Y": 16,
+			"W": 4,
+			"H": 8,
+			"TrimOffsetX": 0,
+			"TrimOffsetY": 0,
+			"UntrimmedWidth": 4,
+			"UntrimmedHeight": 8
+		},
+		{
+			"Name": "enemy.png",
+			"X": 0,
+			"Y": 0,
+			"W": 16,
+			"H": 16,
+			"TrimOffsetX": 0,
+			"TrimOffsetY": 0,
+			"UntrimmedWidth": 16,
+			"UntrimmedHeight": 16
+		},
+		{
+			"Name": "player.png",
+			"X": 0,
+			"Y": 16,
+			"W": 13,
+			"H": 15,
+			"TrimOffsetX": 0,
+			"TrimOffsetY": 0,
+			"UntrimmedWidth": 13,
+			"UntrimmedHeight": 15
+		}
+	]
+}
